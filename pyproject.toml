@@ -23,7 +23,7 @@ classifiers = [
 ]
 requires-python = ">=3.12,<4"
 dependencies = [
-    "hecto>=2.0.1",
+    "hecto>=2.0.2",
     "inflection>=0.5.1",
 ]
 
@@ -49,7 +49,10 @@ test = [
 where = ["src"]
 
 [tool.setuptools.package-data]
-"*" = ["blueprint"]
+proper_new = [
+    "blueprint/*",
+    "blueprint/**/*",
+]
 
 [tool.setuptools.exclude-package-data]
 "*" = [

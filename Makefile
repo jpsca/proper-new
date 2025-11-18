@@ -4,13 +4,13 @@ install:
 
 .PHONY: test
 test:
-	pytest -x tests.py
+	uv run pytest -x tests.py
 
 .PHONY: lint
 lint:
-	ruff check src tests.py
-	ty check
+	uv run ruff check src tests.py
+	uv run ty check
 
 .PHONY: lintfix
 lintfix:
-	ruff check src tests.py --fix
+	uv run ruff check src tests.py --fix
