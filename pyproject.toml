@@ -23,7 +23,7 @@ classifiers = [
 ]
 requires-python = ">=3.12,<4"
 dependencies = [
-    "hecto>=2.0.2",
+    "hecto>=2.0.3",
     "inflection>=0.5.1",
 ]
 
@@ -36,12 +36,12 @@ proper-new = "proper_new:main"
 
 [dependency-groups]
 dev = [
-    "ipdb >= 0.13",
-    "ruff >= 0.2.0",
-    "ty>=0.0.1a24",
+    "ipdb",
+    "ruff",
+    "ty",
 ]
 test = [
-    "pytest >= 7.2",
+    "pytest",
 ]
 
 

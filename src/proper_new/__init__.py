@@ -6,6 +6,7 @@ from pathlib import Path
 import inflection
 from hecto import (
     COLORS,
+    confirm,
     printf,
     render_blueprint,
 )
@@ -24,6 +25,7 @@ def gen_app(
     *,
     name: str = "",
     force: bool = False,
+    use_tailwindcss: bool = True,
     install_deps: bool = True,
 ) -> None:
     """Creates a new Proper application at `path`.
@@ -40,7 +42,11 @@ def gen_app(
 
     """
     path = Path(path).resolve().absolute()
-    path.mkdir(parents=True, exist_ok=False)
+    if path.exists():
+        if not force and not confirm("Path already exists. Continue?", default=False):
+            return
+    else:
+        path.mkdir(parents=True, exist_ok=False)
     app_name = inflection.underscore(name or str(path.stem))
 
     render_blueprint(
@@ -48,14 +54,20 @@ def gen_app(
         path,
         context={
             "app_name": app_name,
+            "use_tailwindcss": use_tailwindcss,
         },
         force=force,
     )
     print()
 
+    if use_tailwindcss:
+        (path / "static" / "css" / "app.css").unlink(missing_ok=True)
+    else:
+        (path / "static" / "css" / "_input.css").unlink(missing_ok=True)
+
     if install_deps:
         _install_dependencies(path)
-    _wrap_up(path)
+    wrap_up(path)
 
 
 def _install_dependencies(path: Path) -> None:
@@ -69,7 +81,7 @@ def _install_dependencies(path: Path) -> None:
     # call("tailwindcss_install")
 
 
-def _wrap_up(path: Path) -> None:
+def wrap_up(path: Path) -> None:
     print("✨ Done! ✨")
     print()
     print(" The following steps are missing:")
@@ -84,7 +96,7 @@ def _wrap_up(path: Path) -> None:
 
 
 def main():
-    usage = "uvx proper-new <path> [--name <app_name>] [--force]"
+    usage = "uvx proper-new <path> [--name <app_name>] [--force] [--no-tailwind]"
     description="""
     The `proper-new` command creates a new Proper application at the path you specify.
     """.strip()
@@ -101,9 +113,26 @@ def main():
     parser.add_argument("path", help="The required path argument")
     parser.add_argument("--name", help="Optional name of the app instead of the one in `path`", default="")
     parser.add_argument("--force", help="Overwrite files that already exist, without asking", action="store_true")
+    parser.add_argument("--no-tailwind", help="Do not use Tailwind CSS", action="store_false")
     args = parser.parse_args()
-    gen_app(args.path, name=args.name, force=args.force)
+    gen_app(args.path, name=args.name, force=args.force, use_tailwindcss=not args.no_tailwind)
+
+
+def print_banner():
+    print("""
+░███████████
+ ░███    ░███
+ ░███    ░███░████████ ░██████ ░████████    ░██████ ░████████
+ ░██████████  ░███ ░██░███ ░███ ░███  ░███ ░███ ░███ ░███ ░██
+ ░███         ░███    ░███ ░███ ░███  ░███ ░███████  ░███
+ ░███         ░███    ░███ ░███ ░███  ░███ ░███      ░███
+░█████       ░█████    ░██████  ░███████    ░██████ ░█████
+                                ░███
+                                ░███
+                               ░█████
+""")
 
 
 if __name__ == "__main__":
+    print_banner()
     main()

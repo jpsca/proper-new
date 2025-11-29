@@ -1,7 +1,28 @@
+.PHONE: proper
+proper:
+	uv build ../proper
+	cp ../proper/dist/proper*.whl .
+	uv sync --upgrade-package proper
+
+.PHONY: dbuild
+dbuild:
+	docker compose build --build-arg UID=$$(id -u) --build-arg GID=$$(id -g) --build-arg USER=$$(whoami)
+
+.PHONY: dup
+drun:
+	docker compose up -d
+
+.PHONY: ddown
+ddown:
+	docker compose down
+
+.PHONY: dshell
+dshell:
+	docker compose exec dev bash
+
 .PHONY: install
 install:
 	uv sync --group dev --group test
-	proper db migrate
 
 .PHONY: test
 test:
@@ -11,6 +32,6 @@ test:
 lint:
 	ruff check .
 
-.PHONY: lintfix
-lintfix:
+.PHONY: lint-fix
+lint-fix:
 	ruff check . --fix

@@ -1,14 +1,12 @@
 from proper import show_banner, show_welcome
 
-from workers import run_consumer_proc
-
 
 debug = True
 host = "0.0.0.0"
 port = 2300
 
 
-wsgi_app = "app.main:app"
+wsgi_app = "[[ app_name ]].main:app"
 
 # The socket to bind.
 # A string of the form: 'HOST', 'HOST:PORT', 'unix:PATH'.
@@ -76,7 +74,6 @@ proc_name = "[[ app_name ]]"
 
 def on_starting(server):
     show_banner()
-    run_consumer_proc()
 
 
 def when_ready(server):
