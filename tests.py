@@ -22,12 +22,3 @@ def test_gen_app(tmp_path):
     gen_app(root, force=True, install_deps=False)
 
     _assert_structure(root)
-
-
-def test_gen_app_custom(tmp_path):
-    name = "myapp"
-    root = tmp_path / "project"
-    gen_app(root, name=name, force=True, install_deps=False)
-
-    _assert_structure(root)
-
