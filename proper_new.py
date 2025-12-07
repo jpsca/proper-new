@@ -12,7 +12,7 @@ from hecto import (
 )
 
 
-APP_BLUEPRINT = Path(__file__).parent / "blueprint"
+APP_BLUEPRINT = "git@github.com:jpsca/proper.git"
 
 
 def call(cmd: str) -> None:
@@ -52,6 +52,7 @@ def gen_app(
     render_blueprint(
         APP_BLUEPRINT,
         path,
+        src_path="blueprint",
         context={
             "app_name": app_name,
             "use_tailwindcss": use_tailwindcss,
