@@ -8,9 +8,9 @@ test:
 
 .PHONY: lint
 lint:
-	uv run ruff check proper_new.py tests.py
+	uv run ruff check src tests.py
 	uv run ty check
 
 .PHONY: lintfix
 lintfix:
-	uv run ruff check proper_new.py tests.py --fix
+	uv run ruff check src tests.py --fix
