@@ -96,10 +96,10 @@ def wrap_up(path: Path) -> None:
     print()
 
 
-def main():
-    usage = "uvx proper-new <path> [--name <app_name>] [--force] [--no-tailwind]"
+def run():
+    usage = "uvx proper_new <path> [--name <app_name>] [--force] [--no-tailwind]"
     description="""
-    The `proper-new` command creates a new Proper application at the path you specify.
+    The `proper_new` command creates a new Proper application at the path you specify.
     """.strip()
 
     if len(sys.argv) == 1:
@@ -142,4 +142,4 @@ def print_banner():
 
 if __name__ == "__main__":
     print_banner()
-    main()
+    run()

@@ -3,8 +3,8 @@ requires = ["setuptools"]
 
 
 [project]
-name = "proper-new"
-version = "0.3"
+name = "proper_new"
+version = "0.4"
 description = "A script to generate a new Proper project"
 authors = [
     {name = "Juan Pablo Scaletti", email = "juanpablo@jpscaletti.com"},
@@ -31,7 +31,7 @@ dependencies = [
 repository = "https://github.com/jpsca/proper-new"
 
 [project.scripts]
-proper-new = "proper_new:main"
+proper_new= "proper_new:run"
 
 
 [dependency-groups]
