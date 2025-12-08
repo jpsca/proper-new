@@ -12,7 +12,7 @@ from hecto import (
 )
 
 
-APP_BLUEPRINT = "git@github.com:jpsca/proper.git"
+APP_BLUEPRINT = "git@github.com:jpsca/proper.git#blueprint"
 
 
 def call(cmd: str) -> None:
@@ -24,6 +24,7 @@ def gen_app(
     path: str | Path,
     *,
     name: str = "",
+    src: str = APP_BLUEPRINT,
     force: bool = False,
     use_tailwindcss: bool = True,
     install_deps: bool = True,
@@ -50,9 +51,8 @@ def gen_app(
     app_name = inflection.underscore(name or str(path.stem))
 
     render_blueprint(
-        APP_BLUEPRINT,
+        src,
         path,
-        src_path="blueprint",
         context={
             "app_name": app_name,
             "use_tailwindcss": use_tailwindcss,
@@ -113,10 +113,16 @@ def main():
     )
     parser.add_argument("path", help="The required path argument")
     parser.add_argument("--name", help="Optional name of the app instead of the one in `path`", default="")
+    parser.add_argument("--src", help="Optional source url/path of the blueprint instead of the default one", default="")
     parser.add_argument("--force", help="Overwrite files that already exist, without asking", action="store_true")
     parser.add_argument("--no-tailwind", help="Do not use Tailwind CSS", action="store_false")
     args = parser.parse_args()
-    gen_app(args.path, name=args.name, force=args.force, use_tailwindcss=not args.no_tailwind)
+    gen_app(
+        args.path,
+        name=args.name,
+        src=args.src,
+        force=args.force,
+        use_tailwindcss=not args.no_tailwind)
 
 
 def print_banner():

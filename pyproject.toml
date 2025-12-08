@@ -9,7 +9,7 @@ description = "A script to generate a new Proper project"
 authors = [
     {name = "Juan Pablo Scaletti", email = "juanpablo@jpscaletti.com"},
 ]
-license = { "file" = "MIT-LICENSE" }
+license = "MIT"
 readme = "README.md"
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -23,7 +23,7 @@ classifiers = [
 ]
 requires-python = ">=3.12,<4"
 dependencies = [
-    "hecto>=2.1.0",
+    "hecto>=2.2.1",
     "inflection>=0.5.1",
 ]
 
@@ -61,7 +61,6 @@ exclude = [
   "_build",
   "build",
   "dist",
-  "src/proper_new/blueprint/*",
 ]
 include = ["*.py"]
 
@@ -109,8 +108,6 @@ select = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["proper_new"]
-known-local-folder = ["src/proper_new"]
 no-lines-before = ["local-folder"]
 relative-imports-order = "furthest-to-closest"
 # Use two line after imports.
