@@ -4,7 +4,7 @@ requires = ["setuptools"]
 
 [project]
 name = "proper-new"
-version = "0.2"
+version = "0.3"
 description = "A script to generate a new Proper project"
 authors = [
     {name = "Juan Pablo Scaletti", email = "juanpablo@jpscaletti.com"},
