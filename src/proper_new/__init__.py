@@ -24,7 +24,7 @@ def gen_app(
     path: str | Path,
     *,
     name: str = "",
-    src: str = APP_BLUEPRINT,
+    src: str = "",
     force: bool = False,
     use_tailwindcss: bool = True,
     install_deps: bool = True,
@@ -48,10 +48,11 @@ def gen_app(
             return
     else:
         path.mkdir(parents=True, exist_ok=False)
-    app_name = inflection.underscore(name or str(path.stem))
+
+    app_name = inflection.underscore(name.strip() or str(path.stem))
 
     render_blueprint(
-        src,
+        src.strip() or APP_BLUEPRINT,
         path,
         context={
             "app_name": app_name,
