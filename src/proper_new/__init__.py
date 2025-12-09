@@ -51,8 +51,15 @@ def gen_app(
 
     app_name = inflection.underscore(name.strip() or str(path.stem))
 
+    src = src.strip()
+    if src:
+        print("Using custom blueprint:", src)
+    else:
+        print("Using default blueprint:", APP_BLUEPRINT)
+        src = APP_BLUEPRINT
+
     render_blueprint(
-        src.strip() or APP_BLUEPRINT,
+        src,
         path,
         context={
             "app_name": app_name,
@@ -116,14 +123,15 @@ def run():
     parser.add_argument("--name", help="Optional name of the app instead of the one in `path`", default="")
     parser.add_argument("--src", help="Optional source url/path of the blueprint instead of the default one", default="")
     parser.add_argument("--force", help="Overwrite files that already exist, without asking", action="store_true")
-    parser.add_argument("--no-tailwind", help="Do not use Tailwind CSS", action="store_false")
+    parser.add_argument("--no-tailwind", help="Do not use Tailwind CSS", action="store_true")
     args = parser.parse_args()
     gen_app(
         args.path,
         name=args.name,
         src=args.src,
         force=args.force,
-        use_tailwindcss=not args.no_tailwind)
+        use_tailwindcss=not args.no_tailwind
+    )
 
 
 def print_banner():
