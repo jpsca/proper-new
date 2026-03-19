@@ -2,10 +2,7 @@ from proper_new import gen_app
 
 
 def _assert_structure(root):
-    assert (root / "static").is_dir()
-    assert (root / "static" / "css").is_dir()
-    assert (root / "static" / "css" / "not-found-page.css").exists()
-
+    assert (root / "myapp" / "assets").is_dir()
     assert (root / "myapp" / "config").is_dir()
     assert (root / "myapp" / "controllers").is_dir()
     assert (root / "myapp" / "forms").is_dir()
