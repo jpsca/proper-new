@@ -26,7 +26,7 @@ def gen_app(
     name: str = "",
     src: str = "",
     force: bool = False,
-    use_tailwindcss: bool = True,
+    tailwind: bool = False,
     install_deps: bool = True,
 ) -> None:
     """Creates a new Proper application at `path`.
@@ -63,13 +63,13 @@ def gen_app(
         path,
         context={
             "app_name": app_name,
-            "use_tailwindcss": use_tailwindcss,
+            "tailwind": tailwind,
         },
         force=force,
     )
     print()
 
-    if use_tailwindcss:
+    if tailwind:
         (path / "static" / "css" / "app.css").unlink(missing_ok=True)
     else:
         (path / "static" / "css" / "_input.css").unlink(missing_ok=True)
@@ -87,7 +87,6 @@ def _install_dependencies(path: Path) -> None:
             && uv venv \\
             && uv sync --group dev
     """)
-    # call("tailwindcss_install")
 
 
 def wrap_up(path: Path) -> None:
@@ -105,7 +104,7 @@ def wrap_up(path: Path) -> None:
 
 
 def run():
-    usage = "uvx proper_new <path> [--name <app_name>] [--force] [--no-tailwind]"
+    usage = "uvx proper_new <path> [--name <app_name>] [--force] [--tailwind]"
     description="""
     The `proper_new` command creates a new Proper application at the path you specify.
     """.strip()
@@ -123,14 +122,14 @@ def run():
     parser.add_argument("--name", help="Optional name of the app instead of the one in `path`", default="")
     parser.add_argument("--src", help="Optional source url/path of the blueprint instead of the default one", default="")
     parser.add_argument("--force", help="Overwrite files that already exist, without asking", action="store_true")
-    parser.add_argument("--no-tailwind", help="Do not use Tailwind CSS", action="store_true")
+    parser.add_argument("--tailwind", help="Use Tailwind CSS", action="store_true")
     args = parser.parse_args()
     gen_app(
         args.path,
         name=args.name,
         src=args.src,
         force=args.force,
-        use_tailwindcss=not args.no_tailwind
+        tailwind=args.tailwind
     )
 
 
