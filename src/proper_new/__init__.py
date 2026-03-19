@@ -69,10 +69,8 @@ def gen_app(
     )
     print()
 
-    if tailwind:
-        (path / "static" / "css" / "app.css").unlink(missing_ok=True)
-    else:
-        (path / "static" / "css" / "_input.css").unlink(missing_ok=True)
+    if not tailwind:
+        (path / "static" / "css" / "_tw.css").unlink(missing_ok=True)
 
     if install_deps:
         _install_dependencies(path)
