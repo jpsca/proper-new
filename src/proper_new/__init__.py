@@ -1,5 +1,6 @@
 import argparse
 import os
+import subprocess
 import sys
 from pathlib import Path
 
@@ -12,7 +13,35 @@ from hecto import (
 )
 
 
-APP_BLUEPRINT = "git@github.com:jpsca/proper.git#blueprint"
+APP_BLUEPRINT_REPO = "https://github.com/jpsca/proper.git"
+
+
+def get_default_blueprint() -> str:
+    """Returns the blueprint URL pinned to the latest tag of the repo,
+    or pointing at the default branch if the tags cannot be listed.
+    """
+    tag = get_latest_tag(APP_BLUEPRINT_REPO)
+    ref = f"@{tag}" if tag else ""
+    return f"{APP_BLUEPRINT_REPO}{ref}#blueprint"
+
+
+def get_latest_tag(repo_url: str) -> str:
+    try:
+        out = subprocess.run(
+            ["git", "ls-remote", "--tags", "--sort=-v:refname", repo_url],
+            capture_output=True,
+            text=True,
+            check=True,
+            timeout=15,
+        ).stdout
+    except (OSError, subprocess.SubprocessError):
+        return ""
+    for line in out.splitlines():
+        ref = line.rpartition("\t")[2]
+        if ref.endswith("^{}"):
+            continue
+        return ref.removeprefix("refs/tags/")
+    return ""
 
 
 def call(cmd: str) -> None:
@@ -55,8 +84,8 @@ def gen_app(
     if src:
         print("Using custom blueprint:", src)
     else:
-        print("Using default blueprint:", APP_BLUEPRINT)
-        src = APP_BLUEPRINT
+        src = get_default_blueprint()
+        print("Using default blueprint:", src)
 
     render_blueprint(
         src,
