@@ -55,7 +55,6 @@ def gen_app(
     name: str = "",
     src: str = "",
     force: bool = False,
-    tailwind: bool = False,
     install_deps: bool = True,
 ) -> None:
     """Creates a new Proper application at `path`.
@@ -92,14 +91,11 @@ def gen_app(
         path,
         context={
             "app_name": app_name,
-            "tailwind": tailwind,
+            "tailwind": False,
         },
         force=force,
     )
     print()
-
-    if not tailwind:
-        (path / "static" / "css" / "_tw.css").unlink(missing_ok=True)
 
     if install_deps:
         _install_dependencies(path)
@@ -131,7 +127,7 @@ def wrap_up(path: Path) -> None:
 
 
 def run():
-    usage = "uvx proper_new <path> [--name <app_name>] [--force] [--tailwind]"
+    usage = "uvx proper_new <path> [--name <app_name>] [--force]"
     description="""
     The `proper_new` command creates a new Proper application at the path you specify.
     """.strip()
@@ -149,14 +145,12 @@ def run():
     parser.add_argument("--name", help="Optional name of the app instead of the one in `path`", default="")
     parser.add_argument("--src", help="Optional source url/path of the blueprint instead of the default one", default="")
     parser.add_argument("--force", help="Overwrite files that already exist, without asking", action="store_true")
-    parser.add_argument("--tailwind", help="Use Tailwind CSS", action="store_true")
     args = parser.parse_args()
     gen_app(
         args.path,
         name=args.name,
         src=args.src,
         force=args.force,
-        tailwind=args.tailwind
     )
 
 
